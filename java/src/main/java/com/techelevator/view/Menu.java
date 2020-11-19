@@ -31,18 +31,12 @@ public class Menu {
 			PrintWriter writer = new PrintWriter(destination);
 			while (inventoryScanner.hasNextLine()) {
 				String data = inventoryScanner.nextLine();
-				options.add("\n" + data + " HELLO");
-//				for (int i = 0; i < options.size(); i++) {
-//					writer.println(options.get(i));
-//					
-//				}
-//				System.out.println(options);
+				options.add("\n" + data);
+
 			}
 			writer.println(options);
 			writer.flush();
 			writer.close();
-			
-			
 		} catch (FileNotFoundException e) {
 			System.out.println("file not found");
 		}
@@ -66,7 +60,8 @@ public class Menu {
 				choice = options[selectedOption - 1];
 			}
 		} catch (NumberFormatException e) {
-			// eat the exception, an error message will be displayed below since choice will be null
+			// eat the exception, an error message will be displayed below since choice will
+			// be null
 		}
 		if (choice == null) {
 			out.println("\n*** " + userInput + " is not a valid option ***\n");
@@ -84,4 +79,3 @@ public class Menu {
 		out.flush();
 	}
 }
-
