@@ -1,8 +1,12 @@
 package com.techelevator.view;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Menu {
@@ -13,6 +17,22 @@ public class Menu {
 	public Menu(InputStream input, OutputStream output) {
 		this.out = new PrintWriter(output);
 		this.in = new Scanner(input);
+	}
+
+	public static void main(String[] args) {
+		
+	File inventory = new File("vendingmachine.csv");
+	List<String> options = new ArrayList<>();
+	
+	try {
+		Scanner inventoryScanner = new Scanner(inventory);
+		while (inventoryScanner.hasNextLine()) {
+			String data = inventoryScanner.nextLine();
+			System.out.println(data);
+			options.add(data);
+		}} catch (FileNotFoundException e) {
+			System.out.println("file not found");
+		}
 	}
 
 	public Object getChoiceFromOptions(Object[] options) {
@@ -51,3 +71,4 @@ public class Menu {
 		out.flush();
 	}
 }
+
