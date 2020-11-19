@@ -2,6 +2,7 @@ package com.techelevator.view;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -19,18 +20,30 @@ public class Menu {
 		this.in = new Scanner(input);
 	}
 
-	public static void main(String[] args) {
-		
-	File inventory = new File("vendingmachine.csv");
-	List<String> options = new ArrayList<>();
-	
-	try {
-		Scanner inventoryScanner = new Scanner(inventory);
-		while (inventoryScanner.hasNextLine()) {
-			String data = inventoryScanner.nextLine();
-			System.out.println(data);
-			options.add(data);
-		}} catch (FileNotFoundException e) {
+	public static void main(String[] args) throws IOException {
+
+		File inventory = new File("vendingmachine.csv");
+		List<String> options = new ArrayList<>();
+
+		File destination = new File("destination.txt");
+		try {
+			Scanner inventoryScanner = new Scanner(inventory);
+			PrintWriter writer = new PrintWriter(destination);
+			while (inventoryScanner.hasNextLine()) {
+				String data = inventoryScanner.nextLine();
+				options.add("\n" + data + " HELLO");
+//				for (int i = 0; i < options.size(); i++) {
+//					writer.println(options.get(i));
+//					
+//				}
+//				System.out.println(options);
+			}
+			writer.println(options);
+			writer.flush();
+			writer.close();
+			
+			
+		} catch (FileNotFoundException e) {
 			System.out.println("file not found");
 		}
 	}
