@@ -53,13 +53,22 @@ public class VendingMachineCLI {
 					System.out.print("Please insert full dollar amounts: $1, $5, $10, or $20 >>>\n");
 					int dollars = userInput.nextInt();
 					currentMoney += dollars;
-					;
+					
 					System.out.println("Current Money: $" + currentMoney);
 					// VendingMachine.feedMoney();
 				} else if (purchaseChoice.equals(PURCHASE_MENU_SELECT_PRODUCT)) {
 					System.out.println(items);
 					System.out.println("Please choose the slot number item you'd like to purchase: \n");
-					String keyChoice = userInput.nextLine();
+					String keyChoice = userInput.nextLine().toUpperCase();
+					for (VendingMachine slot: items) {
+						if (slot.getSlot().equals(keyChoice)) {
+							System.out.println(slot.getName());
+						}
+						
+					}
+//					if (keyChoice.contains("A1")) {
+//						System.out.println(Chips.getName() + ", " + Chips.getPrice() + ", " + (currentMoney - Chips.getPrice());
+//					}
 //Need to figure out how to do "contains slot" here...	if (keyChoice.contains()) {
 // and then dispense that item & remove from inventory	
 					
