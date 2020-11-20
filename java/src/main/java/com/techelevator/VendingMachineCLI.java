@@ -22,6 +22,7 @@ public class VendingMachineCLI {
 	private static final String PURCHASE_MENU_FINISH_TRANSACTION = "Finish Transaction";
 	private static final String[] PURCHASE_MENU_OPTIONS = { PURCHASE_MENU_FEED_MONEY, PURCHASE_MENU_SELECT_PRODUCT,
 			PURCHASE_MENU_FINISH_TRANSACTION };
+	private static final String NO_BUTTON = "That's not an option.";
 
 	private Menu menu;
 	private Menu purchaseMenu;
@@ -31,6 +32,7 @@ public class VendingMachineCLI {
 	}
 
 	Scanner userInput = new Scanner(System.in);
+	int dollars = 0;
 	int currentMoney = 0;
 	BigDecimal cm = new BigDecimal(currentMoney);
 	BigDecimal orderPrice = new BigDecimal(0);
@@ -53,19 +55,26 @@ public class VendingMachineCLI {
 					System.out.print("Please insert full dollar amounts: $1, $5, $10, or $20 >>>\n");
 					int dollars = userInput.nextInt();
 					currentMoney += dollars;
-					
+					BigDecimal bigDollars = new BigDecimal(dollars);
+					cm = cm.add(bigDollars);
 					System.out.println("Current Money: $" + currentMoney);
+					// write to the log file here
 					// VendingMachine.feedMoney();
 				} else if (purchaseChoice.equals(PURCHASE_MENU_SELECT_PRODUCT)) {
 					System.out.println(items);
 					System.out.println("Please choose the slot number item you'd like to purchase: \n");
 					String keyChoice = userInput.nextLine().toUpperCase();
+					boolean found = false;
 					for (VendingMachine slot: items) {
 						if (slot.getSlot().equals(keyChoice)) {
+							found = true;
 							System.out.println(slot.getName() + ", " + slot.getPrice() + ", $" + (cm.subtract(slot.getPrice()) + ", " + slot.purchaseMessage()));
-							
+							// write to log file here
 						}
 						
+					}
+					if (!found) {
+						System.out.println(NO_BUTTON);
 					}
 //					}
 //Need to figure out how to do "contains slot" here...	if (keyChoice.contains()) {
@@ -75,6 +84,7 @@ public class VendingMachineCLI {
 					System.out.println("Thanks for using this ol' vending machine! Your change is: ");
 					coinChange = cm.subtract(orderPrice);
 					System.out.println(coinChange);
+					// write to log file here
 				}
 				// do purchase
 				VendingMachine.purchase();
@@ -84,6 +94,8 @@ public class VendingMachineCLI {
 			}
 		}
 	}
+	
+	// while loop for change that keeps subtracting while there is still change total
 
 	public List<VendingMachine> readFile() {
 		List<VendingMachine> invList = new ArrayList<>();
