@@ -15,6 +15,16 @@ public abstract class VendingMachine {
 	private BigDecimal price;
 	private int quantity;
 	
+	
+	
+	public VendingMachine(String slot, String name, BigDecimal price, int quantity) {
+		super();
+		this.slot = slot;
+		this.name = name;
+		this.price = price;
+		this.quantity = quantity;
+	}
+
 	public int getQuantity() {
 		return quantity;
 	}
@@ -33,42 +43,16 @@ public abstract class VendingMachine {
 	
 	public BigDecimal getPrice() {
 		return price;
+	
 	}
 	
-	public VendingMachine() throws FileNotFoundException {
-	List<String> invList = new ArrayList<>();
-	try {		
-		File inventory = new File ("vendingmachine.csv");
-		Scanner fileScanner = new Scanner(inventory);
-		while (fileScanner.hasNextLine()) {
-			String invData = fileScanner.nextLine();
-			invList.add(invData);
-		}
-	} catch (FileNotFoundException e) {
-		System.out.println("file not found");
-	}
-
-	
-	
-	//Slot - A1, A2, etc.
-	//Name
-	//Price
-	//Quantity
-	
-	List<String> candy = new ArrayList<>();
-	List<String> chips = new ArrayList<>();
-	List<String> drinks = new ArrayList<>();
-	List<String> gum = new ArrayList<>();
-	
-	for (int i = 0; i < invList.size(); i++) {
-		if (invList.get(0) == "A") {
-		}
-}
+	@Override
+	public String toString() {
+		return slot +"     " + name + "     " + price + "     " + quantity;
 	}
 	public abstract String purchaseMessage();
 
 	public void message() {
 		System.out.println("You didn't get anything.");
 	}
-}
 }
