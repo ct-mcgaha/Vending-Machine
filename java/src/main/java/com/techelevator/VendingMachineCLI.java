@@ -60,6 +60,18 @@ public class VendingMachineCLI {
 					Candy candy = new Candy(slot, name, price, 5);
 					invList.add(candy);
 				}
+				if (type.equals("Chips")) {
+					Chips chips = new Chips(slot, name, price, 5);
+					invList.add(chips);
+				}
+				if (type.equals("Gum")) {
+					Gum gum = new Gum(slot, name, price, 5);
+					invList.add(gum);
+				}
+				if (type.equals("Drinks")) {
+					Drinks drinks = new Drinks(slot, name, price, 5);
+					invList.add(drinks);
+				}
 			}
 		} catch (FileNotFoundException e) {
 			System.out.println("file not found");
