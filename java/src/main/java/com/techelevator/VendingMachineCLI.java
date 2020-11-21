@@ -33,14 +33,15 @@ public class VendingMachineCLI {
 	Scanner userInput = new Scanner(System.in);
 	int dollars = 0;
 	int currentMoney = 0;
-	BigDecimal cm = new BigDecimal(currentMoney);
+	BigDecimal cm = new BigDecimal(0); // changed to 0 -- cm was always set to currentMoney so was constant based on feedMoney
 	BigDecimal orderPrice = new BigDecimal(0);
 	BigDecimal coinChange = new BigDecimal(0);
 
 	public void run() {
 		List<VendingMachine> items = new ArrayList<>();
 		items = readFile();
-		while (true) {
+		boolean shouldLoop = true;
+		while (shouldLoop) {
 			String choice = (String) menu.getChoiceFromOptions(MAIN_MENU_OPTIONS);
 			// String purchaseChoice = (String)
 			// menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
@@ -48,7 +49,8 @@ public class VendingMachineCLI {
 				// display vending machine items
 				System.out.println(items);
 			} else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
-				while (true) {
+				shouldLoop = false;
+				while (!shouldLoop) {
 					String purchaseChoice = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
 					if (purchaseChoice.equals(PURCHASE_MENU_FEED_MONEY)) {
 						System.out.println("Please insert full dollar amounts: $1, $5, $10, or $20 >>> ");
@@ -56,7 +58,7 @@ public class VendingMachineCLI {
 						currentMoney += dollars;
 						BigDecimal bigDollars = new BigDecimal(dollars);
 						cm = cm.add(bigDollars);
-						System.out.println("Current Money: $" + currentMoney);
+						System.out.println("Current Money: $" + cm); // was printing currentMoney instead of cm
 						// write to the log file here
 						// VendingMachine.feedMoney();
 					} else if (purchaseChoice.equals(PURCHASE_MENU_SELECT_PRODUCT)) {
@@ -64,37 +66,63 @@ public class VendingMachineCLI {
 						System.out.println(items);
 						String keyChoice = userInput.nextLine().toUpperCase();
 						boolean found = false;
-						boolean inStock = false;
+//						boolean inStock = false;
 						for (VendingMachine slot : items) {
 							if (slot.getSlot().equals(keyChoice)) {
+								found = true;
 								if (slot.getQuantity() > 0) {
-									inStock = true;
-								}
-									found = true;
-									System.out.println(slot.getName() + ", " + slot.getPrice() + ", $"
-											+ (cm.subtract(slot.getPrice()) + ", " + slot.purchaseMessage()));
-									slot.setQuantity(slot.getQuantity() - 1);
-									// write to log file here
-								}
-							
+//									inStock = true;
+									cm = cm.subtract(slot.getPrice());
+									if (cm.intValue() > 0) {
+										System.out.println(slot.getName() + ", $" + slot.getPrice() + ", $" + cm + ", "
+												+ slot.purchaseMessage());
+										slot.setQuantity(slot.getQuantity() - 1);
+									} else {
+										System.out.println("Not enough money!");
 
-							if (slot.getSlot().equals(keyChoice)) {
-								if (slot.getQuantity() < 1) {
-									inStock = false;
+									}
+									// moved changes to quantity inside if statement
+								} else {
+									System.out.println("Out Of Stock!");
 								}
+								// write to log file here
 							}
+
+//							if (slot.getSlot().equals(keyChoice)) {
+//								if (slot.getQuantity() < 1) {
+//									inStock = false;
+//								}
+//							}
 						}
 						if (!found) {
 							System.out.println(NO_BUTTON);
 						}
-						if (!inStock) {
-							System.out.println("Out Of Stock!");
-						}
+//						if (!inStock) {
+//							System.out.println("Out Of Stock!");
+//						}
 
 					} else if (purchaseChoice.equals(PURCHASE_MENU_FINISH_TRANSACTION)) {
 						System.out.println("Thanks for using this ol' vending machine! Your change is: ");
-						coinChange = cm.subtract(orderPrice);
+						coinChange = cm;
+						int quarter = 0;
+						BigDecimal bigQuarter = new BigDecimal(.25);
+						int dime = 0;
+						BigDecimal bigDime = new BigDecimal(.10);
+						int nickel = 0;
+						BigDecimal bigNickel = new BigDecimal(.05);
+						BigDecimal zero = new BigDecimal(0);
+						while (coinChange.compareTo(zero)) {
+							if (coinChange.remainder(bigQuarter).equals(zero)) {
+								quarter++;
+								coinChange.subtract(bigQuarter);
+							}
+							if (coinChange.remainder(bigDime).equals(zero) ) {
+								dime++;
+								coinChange.subtract(bigDime);
+							}
+						}
 						System.out.println(coinChange);
+						shouldLoop = true;
 						// write to log file here
 					}
 //				// do purchase
