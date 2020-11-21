@@ -25,7 +25,6 @@ public class VendingMachineCLI {
 	private static final String NO_BUTTON = "That's not an option.";
 
 	private Menu menu;
-	private Menu purchaseMenu;
 
 	public VendingMachineCLI(Menu menu) {
 		this.menu = menu;
@@ -37,65 +36,66 @@ public class VendingMachineCLI {
 	BigDecimal cm = new BigDecimal(currentMoney);
 	BigDecimal orderPrice = new BigDecimal(0);
 	BigDecimal coinChange = new BigDecimal(0);
-	
 
 	public void run() {
 		List<VendingMachine> items = new ArrayList<>();
 		items = readFile();
 		while (true) {
 			String choice = (String) menu.getChoiceFromOptions(MAIN_MENU_OPTIONS);
-
+			// String purchaseChoice = (String)
+			// menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
 			if (choice.equals(MAIN_MENU_OPTION_DISPLAY_ITEMS)) {
 				// display vending machine items
 				System.out.println(items);
-
 			} else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
-				String purchaseChoice = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
-				if (purchaseChoice.equals(PURCHASE_MENU_FEED_MONEY)) {
-					System.out.print("Please insert full dollar amounts: $1, $5, $10, or $20 >>>\n");
-					int dollars = userInput.nextInt();
-					currentMoney += dollars;
-					BigDecimal bigDollars = new BigDecimal(dollars);
-					cm = cm.add(bigDollars);
-					System.out.println("Current Money: $" + currentMoney);
-					// write to the log file here
-					// VendingMachine.feedMoney();
-				} else if (purchaseChoice.equals(PURCHASE_MENU_SELECT_PRODUCT)) {
-					System.out.println(items);
-					System.out.println("Please choose the slot number item you'd like to purchase: \n");
-					String keyChoice = userInput.nextLine().toUpperCase();
-					boolean found = false;
-					for (VendingMachine slot: items) {
-						if (slot.getSlot().equals(keyChoice)) {
-							found = true;
-							System.out.println(slot.getName() + ", " + slot.getPrice() + ", $" + (cm.subtract(slot.getPrice()) + ", " + slot.purchaseMessage()));
-							// write to log file here
+				while (true) {
+					String purchaseChoice = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
+					if (purchaseChoice.equals(PURCHASE_MENU_FEED_MONEY)) {
+						System.out.println("Please insert full dollar amounts: $1, $5, $10, or $20 >>> ");
+						int dollars = userInput.nextInt();
+						currentMoney += dollars;
+						BigDecimal bigDollars = new BigDecimal(dollars);
+						cm = cm.add(bigDollars);
+						System.out.println("Current Money: $" + currentMoney);
+						// write to the log file here
+						// VendingMachine.feedMoney();
+					} else if (purchaseChoice.equals(PURCHASE_MENU_SELECT_PRODUCT)) {
+						System.out.println("Please choose the slot number item you'd like to purchase: ");
+						System.out.println(items);
+						String keyChoice = userInput.nextLine().toUpperCase();
+						boolean found = false;
+						for (VendingMachine slot : items) {
+							if (slot.getSlot().equals(keyChoice)) {
+								found = true;
+								System.out.println(slot.getName() + ", " + slot.getPrice() + ", $"
+										+ (cm.subtract(slot.getPrice()) + ", " + slot.purchaseMessage()));
+								slot.setQuantity(-1);
+								// write to log file here
+							}
+
 						}
-						
+						if (!found) {
+							System.out.println(NO_BUTTON);
+						}
+
+					} else if (purchaseChoice.equals(PURCHASE_MENU_FINISH_TRANSACTION)) {
+						System.out.println("Thanks for using this ol' vending machine! Your change is: ");
+						coinChange = cm.subtract(orderPrice);
+						System.out.println(coinChange);
+						// write to log file here
 					}
-					if (!found) {
-						System.out.println(NO_BUTTON);
-					}
-//					}
-//Need to figure out how to do "contains slot" here...	if (keyChoice.contains()) {
-// and then dispense that item & remove from inventory	
-					
-				} else if (purchaseChoice.equals(PURCHASE_MENU_FINISH_TRANSACTION)) {
-					System.out.println("Thanks for using this ol' vending machine! Your change is: ");
-					coinChange = cm.subtract(orderPrice);
-					System.out.println(coinChange);
-					// write to log file here
+//				// do purchase
+//				VendingMachine.purchase();
 				}
-				// do purchase
-				VendingMachine.purchase();
 			} else if (choice.equals(END_PROGRAM)) {
 				System.out.println("Thank you!");
 				System.exit(1);
 			}
 		}
 	}
-	
-	// while loop for change that keeps subtracting while there is still change total
+
+	// while loop for change that keeps subtracting while there is still change
+	// total
 
 	public List<VendingMachine> readFile() {
 		List<VendingMachine> invList = new ArrayList<>();
@@ -132,7 +132,7 @@ public class VendingMachineCLI {
 			System.out.println("file not found");
 		}
 
-		//System.out.println(invList); // for debugging purposes only
+		// System.out.println(invList); // for debugging purposes only
 
 		return invList;
 	}
