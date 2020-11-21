@@ -49,7 +49,7 @@ public class VendingMachineCLI {
 		try (vmLogger testLog = new vmLogger("purchaseLog.txt")) {
 			boolean shouldLoop = true;
 			while (shouldLoop) {
-				String choice = (String) menu.getChoiceFromOptions(MAIN_MENU_OPTIONS);
+String choice = (String) menu.getChoiceFromOptions(MAIN_MENU_OPTIONS);
 				if (choice.equals(MAIN_MENU_OPTION_DISPLAY_ITEMS)) {
 					System.out.println(items);
 				} else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
@@ -98,40 +98,75 @@ public class VendingMachineCLI {
 							}
 
 						} else if (purchaseChoice.equals(PURCHASE_MENU_FINISH_TRANSACTION)) {
-							System.out.println("Thanks for using this ol' vending machine! Your change is: ");
 							coinChange = (cm.subtract(orderPrice));
 							System.out.println(coinChange);
+							double changeD = coinChange.doubleValue();
 							BigDecimal bigSingle = new BigDecimal("1.00");
 							int quarter = 0;
+							double quarterD = 0;
 							BigDecimal bigQuarter = new BigDecimal("0.25");
 							int dime = 0;
+							double dimeD = 0;
 							BigDecimal bigDime = new BigDecimal("0.10");
 							int nickel = 0;
+							double nickelD = 0;
 							BigDecimal bigNickel = new BigDecimal("0.05");
 							BigDecimal zero = new BigDecimal("0.00");
 							BigDecimal dollarChange = coinChange.remainder(bigSingle);
-							BigDecimal quarterChange = coinChange.remainder(bigQuarter);
+	//						BigDecimal quarterChange = coinChange.remainder(bigQuarter);
 							BigDecimal dimeChange = coinChange.remainder(bigDime);
 							BigDecimal nickelChange = coinChange.remainder(bigNickel);
-							
-								if (dollarChange.equals(zero)) {
-									dollarChange.equals(bigQuarter.add(quartersInADollar));
-								}
-								if (quarterChange.equals(zero)) {
+							boolean changeLoop1 = true;
+							boolean changeLoop2 = true;
+							boolean changeLoop3 = true;
+							while (changeLoop1) {
+								int res = coinChange.compareTo(bigQuarter);
+								if (res == 1) { 
+									coinChange = coinChange.subtract(bigQuarter);
 									quarter++;
-									coinChange.subtract(bigQuarter);
 								}
-								if (dimeChange.equals(zero)) {
+								if (res == 0) {
+									coinChange = coinChange.subtract(bigQuarter);
+									quarter++;
+									changeLoop1 = false;
+								}
+								if (res == -1) {
+									changeLoop1 = false;
+								}
+							}
+							while (changeLoop2) {
+								int res2 = coinChange.compareTo(bigDime);
+								if (res2 == 1) {
+									coinChange = coinChange.subtract(bigDime);
 									dime++;
-									coinChange.subtract(bigDime);
 								}
-								if (nickelChange.equals(zero)) {
+								if (res2 == 0) {
+									coinChange = coinChange.subtract(bigDime);
+									dime++;
+									changeLoop2 = false;
+								}
+								if (res2 == -1) {
+									changeLoop2 = false;
+								}
+							}
+							while (changeLoop3) {
+								int res3 = coinChange.compareTo(bigNickel);
+								if (res3 == 1) {
+									coinChange = coinChange.subtract(bigNickel);
 									nickel++;
-									coinChange.subtract(bigNickel);
 								}
-							//}
-							System.out.println("your change is: " + quarter + " quarters " + dime + " dimes and "
+								if (res3 == 0) {
+									coinChange = coinChange.subtract(bigNickel);
+									nickel++;
+									changeLoop3 = false;
+								}
+								if (res3 == -1) {
+									changeLoop3 = false;
+								}
+						}
+							System.out.println("Thanks for using this ol' vending machine! \nYour change is: " + quarter + " quarters " + dime + " dimes and "
 									+ nickel + " nickels");
+							cm.equals(zero);
 							shouldLoop = true;
 							testLog.write(dateTime.format(now) + "   CHANGE:   " + coinChange);
 							// System.out.println(coinChange);
