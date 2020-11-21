@@ -52,7 +52,7 @@ public class VendingMachineCLI {
 					String purchaseChoice = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
 					if (purchaseChoice.equals(PURCHASE_MENU_FEED_MONEY)) {
 						System.out.println("Please insert full dollar amounts: $1, $5, $10, or $20 >>> ");
-						int dollars = userInput.nextInt();
+						int dollars = Integer.parseInt(userInput.nextLine());
 						currentMoney += dollars;
 						BigDecimal bigDollars = new BigDecimal(dollars);
 						cm = cm.add(bigDollars);
@@ -64,18 +64,31 @@ public class VendingMachineCLI {
 						System.out.println(items);
 						String keyChoice = userInput.nextLine().toUpperCase();
 						boolean found = false;
+						boolean inStock = false;
 						for (VendingMachine slot : items) {
 							if (slot.getSlot().equals(keyChoice)) {
-								found = true;
-								System.out.println(slot.getName() + ", " + slot.getPrice() + ", $"
-										+ (cm.subtract(slot.getPrice()) + ", " + slot.purchaseMessage()));
-								slot.setQuantity(-1);
-								// write to log file here
-							}
+								if (slot.getQuantity() > 0) {
+									inStock = true;
+								}
+									found = true;
+									System.out.println(slot.getName() + ", " + slot.getPrice() + ", $"
+											+ (cm.subtract(slot.getPrice()) + ", " + slot.purchaseMessage()));
+									slot.setQuantity(slot.getQuantity() - 1);
+									// write to log file here
+								}
+							
 
+							if (slot.getSlot().equals(keyChoice)) {
+								if (slot.getQuantity() < 1) {
+									inStock = false;
+								}
+							}
 						}
 						if (!found) {
 							System.out.println(NO_BUTTON);
+						}
+						if (!inStock) {
+							System.out.println("Out Of Stock!");
 						}
 
 					} else if (purchaseChoice.equals(PURCHASE_MENU_FINISH_TRANSACTION)) {
