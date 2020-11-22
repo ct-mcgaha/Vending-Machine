@@ -15,6 +15,9 @@ public abstract class VendingMachine {
 		return stock;
 	}
 	
+	public VendingMachine() {
+		
+	}
 	
 	public VendingMachine(String slot, String name, BigDecimal price, int quantity) {
 		super();
@@ -79,6 +82,5 @@ public abstract class VendingMachine {
 	}
 	
 	public static void feedMoney() {
-		
-	}
+}
 }

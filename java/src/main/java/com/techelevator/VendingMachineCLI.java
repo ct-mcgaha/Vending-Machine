@@ -91,7 +91,6 @@ public class VendingMachineCLI {
 											cm = cm.add(slot.getPrice());
 											System.out.println("Not enough money!");
 										}
-
 									} else {
 										System.out.println("Out Of Stock!");
 									}
