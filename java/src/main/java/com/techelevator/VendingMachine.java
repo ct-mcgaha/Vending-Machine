@@ -9,6 +9,12 @@ public abstract class VendingMachine {
 	private String name;
 	private BigDecimal price;
 	private int quantity;
+	private String stock;
+	
+	public String getStock() {
+		return stock;
+	}
+	
 	
 	public VendingMachine(String slot, String name, BigDecimal price, int quantity) {
 		super();
@@ -16,6 +22,11 @@ public abstract class VendingMachine {
 		this.name = name;
 		this.price = price;
 		this.quantity = quantity;
+	}
+	
+	public VendingMachine(String slot, String name, BigDecimal price, int quantity, String stock) {
+		super();
+		this.stock = stock;
 	}
 
 	public int getQuantity() {
@@ -37,6 +48,13 @@ public abstract class VendingMachine {
 		return name;
 	}
 	
+
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+
+
 	public BigDecimal getPrice() {
 		return price;
 	
@@ -54,31 +72,13 @@ public abstract class VendingMachine {
 	}
 
 	public static void displayItems() {
-		// shows each item (slot, name, price, *updated* quantity)
-		// shows *SOLDOUT*
-		// choice to return to main menu
-		System.out.println();
-		System.out.println();
-		System.exit(1);
+		System.out.println(VendingMachineCLI.items);
 	}
 	
 	public static void purchase() {
-		// new menu (purchase Menu) that shows new options
-		// Feed Money / Select Product / Finish Transaction
-		// Feed Money - input money to total
-		// Select Product - 
-			// shows products available
-			// *option for "does not exist"
-			// "sold out"
-			// dispense product to customer
-				// prints name, cost, money remaining
-		// have option for sold out == 0;
 	}
 	
 	public static void feedMoney() {
-//		System.out.print("Please insert full dollar amounts: $1, $5, $10, or $20");
-//		int dollars = userInput.nextInt();
-//		dollars += currentMoney;
-//		System.out.println(currentMoney);
+		
 	}
 }

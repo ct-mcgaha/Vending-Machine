@@ -6,8 +6,7 @@ public class Chips extends VendingMachine {
 
 	public Chips(String slot, String name, BigDecimal price, int quantity) {
 		super(slot, name, price, quantity);
-		// TODO Auto-generated constructor stub
-	}
+			}
 
 	@Override
 	public String purchaseMessage() {

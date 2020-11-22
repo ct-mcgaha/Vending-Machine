@@ -26,11 +26,15 @@ public class VendingMachineCLI {
 	private static final String[] PURCHASE_MENU_OPTIONS = { PURCHASE_MENU_FEED_MONEY, PURCHASE_MENU_SELECT_PRODUCT,
 			PURCHASE_MENU_FINISH_TRANSACTION };
 	private static final String NO_BUTTON = "That's not an option.";
+	public static List<VendingMachine> items = new ArrayList<>();
 
 	private Menu menu;
 
 	public VendingMachineCLI(Menu menu) {
 		this.menu = menu;
+	}
+	
+	public VendingMachineCLI() {
 	}
 
 	Scanner userInput = new Scanner(System.in);
@@ -44,14 +48,13 @@ public class VendingMachineCLI {
 	LocalDateTime now = LocalDateTime.now();
 
 	public void run() throws IOException {
-		List<VendingMachine> items = new ArrayList<>();
 		items = readFile();
 		try (vmLogger testLog = new vmLogger("purchaseLog.txt")) {
 			boolean shouldLoop = true;
 			while (shouldLoop) {
 				String choice = (String) menu.getChoiceFromOptions(MAIN_MENU_OPTIONS);
 				if (choice.equals(MAIN_MENU_OPTION_DISPLAY_ITEMS)) {
-					System.out.println(items);
+					VendingMachine.displayItems();
 				} else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
 					shouldLoop = false;
 					while (!shouldLoop) {
@@ -79,9 +82,13 @@ public class VendingMachineCLI {
 											System.out.println(slot.getName() + ", $" + slot.getPrice() + ", $" + cm
 													+ ", " + slot.purchaseMessage());
 											slot.setQuantity(slot.getQuantity() - 1);
+											if (slot.getQuantity() == 0) {
+												slot.setName(slot.getName() + " ***** SOLD OUT ***** ");
+											}
 											testLog.write(dateTime.format(now) + "   " + slot.getName() + " "
 													+ slot.getSlot());
 										} else {
+											cm = cm.add(slot.getPrice());
 											System.out.println("Not enough money!");
 										}
 
@@ -155,10 +162,7 @@ public class VendingMachineCLI {
 							cm = BigDecimal.valueOf(0.00);
 							shouldLoop = true;
 							testLog.write(dateTime.format(now) + "   CHANGE:   " + coinChange);
-							// System.out.println(coinChange);
 						}
-//				// do purchase
-//				VendingMachine.purchase();
 					}
 				} else if (choice.equals(END_PROGRAM)) {
 					System.out.println("Thank you!");
@@ -167,9 +171,6 @@ public class VendingMachineCLI {
 			}
 		}
 	}
-
-	// while loop for change that keeps subtracting while there is still change
-	// total
 
 	public List<VendingMachine> readFile() {
 		List<VendingMachine> invList = new ArrayList<>();
@@ -205,9 +206,6 @@ public class VendingMachineCLI {
 		} catch (FileNotFoundException e) {
 			System.out.println("file not found");
 		}
-
-		// System.out.println(invList); // for debugging purposes only
-
 		return invList;
 	}
 
@@ -216,5 +214,4 @@ public class VendingMachineCLI {
 		VendingMachineCLI cli = new VendingMachineCLI(menu);
 		cli.run();
 	}
-
 }
