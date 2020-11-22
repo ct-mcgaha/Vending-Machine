@@ -18,14 +18,7 @@ public abstract class VendingMachine {
 	public String getStock() {
 		return stock;
 	}
-	
-<<<<<<< HEAD
-=======
-	public VendingMachine() {
-		
-	}
-	
->>>>>>> caec782721d1817dbbcc32fa4aebf117531d1bad
+
 	public VendingMachine(String slot, String name, BigDecimal price, int quantity) {
 		super();
 		this.slot = slot;
