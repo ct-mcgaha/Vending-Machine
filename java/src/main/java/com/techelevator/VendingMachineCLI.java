@@ -102,7 +102,7 @@ public class VendingMachineCLI {
 							}
 						} else if (purchaseChoice.equals(PURCHASE_MENU_FINISH_TRANSACTION)) {
 							coinChange = (cm.subtract(orderPrice));
-							System.out.println(coinChange);
+							testLog.write(dateTime.format(now) + "   CHANGE:   " + coinChange);
 							int quarter = 0;
 							BigDecimal bigQuarter = new BigDecimal("0.25");
 							int dime = 0;
@@ -161,7 +161,6 @@ public class VendingMachineCLI {
 									+ " quarters " + dime + " dimes and " + nickel + " nickels");
 							cm = BigDecimal.valueOf(0.00);
 							shouldLoop = true;
-							testLog.write(dateTime.format(now) + "   CHANGE:   " + coinChange);
 						}
 					}
 				} else if (choice.equals(END_PROGRAM)) {

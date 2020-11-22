@@ -9,6 +9,10 @@ public class Drinks extends VendingMachine {
 		// TODO Auto-generated constructor stub
 	}
 
+	public Drinks() {
+		
+	}
+	
 	@Override
 	public String purchaseMessage() {
 		return "Glug Glug, Yum!";

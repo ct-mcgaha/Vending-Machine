@@ -11,10 +11,13 @@ public abstract class VendingMachine {
 	private int quantity;
 	private String stock;
 	
+	public VendingMachine() {
+		
+	}
+	
 	public String getStock() {
 		return stock;
 	}
-	
 	
 	public VendingMachine(String slot, String name, BigDecimal price, int quantity) {
 		super();

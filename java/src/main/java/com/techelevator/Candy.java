@@ -8,6 +8,11 @@ public class Candy extends VendingMachine {
 		super(slot, name, price, quantity);
 	}
 
+	public Candy() {
+
+	}
+
+
 	@Override
 	public String purchaseMessage() {
 		return "Munch Munch, Yum!";

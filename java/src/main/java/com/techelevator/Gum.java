@@ -8,6 +8,10 @@ public class Gum extends VendingMachine {
 		super(slot, name, price, quantity);
 		// TODO Auto-generated constructor stub
 	}
+	
+	public Gum() {
+		
+	}
 
 	@Override
 	public String purchaseMessage() {
